@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Boletín Académico - La Buena Semilla</title>
+    <style>
+        body { font-family: 'Calibri', sans-serif; background-color: #e0e0e0; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .page { background: #fff; width: 215.9mm; min-height: 279.4mm; padding: 15mm; box-sizing: border-box; position: relative; border: 3px double #0D47A1; box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+        
+        /* Encabezado con escudos a los lados */
+        .header { text-align: center; border-bottom: 3px solid #800020; padding-bottom: 15px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .logo-space { width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; }
+        .logo-space img { max-width: 100%; max-height: 120px; object-fit: contain; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.15)); }
+        .institution-info { flex-grow: 1; color: #0D47A1; padding: 0 15px; }
+        .institution-info h1 { margin: 0; font-family: 'Cambria', serif; font-size: 21px; text-transform: uppercase; letter-spacing: 2px; line-height: 1.2; }
+        .institution-info p { margin: 4px 0; font-size: 11px; color: #263238; font-weight: bold; }
+        
+        /* Franja de título Vino Tinto */
+        .title-box { background: #800020; color: #fff; padding: 10px 30px; font-family: 'Cambria', serif; font-size: 18px; letter-spacing: 3px; text-align: center; margin-bottom: 15px; border-left: 5px solid #0D47A1; border-right: 5px solid #0D47A1; }
+        
+        .student-info { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; border: 1px solid #0D47A1; padding: 10px; background: #f4f2f7; }
+        .info-group { display: flex; flex-direction: column; }
+        .info-group label { font-size: 9px; font-weight: bold; color: #0D47A1; text-transform: uppercase; }
+        .info-group input { border: none; border-bottom: 1.5px solid #0D47A1; font-size: 12px; padding: 2px 0; background: transparent; outline: none; font-family: inherit; color: #263238; }
+        
+        /* Tabla Académica Azul y Vino */
+        table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 15px; }
+        th { background: #0D47A1; color: #fff; padding: 6px; text-align: center; font-family: 'Cambria', serif; border: 1px solid #0D47A1; }
+        td { border: 1px solid #bbb; padding: 5px; vertical-align: top; }
+        
+        .asignatura-name { background: #e3f2fd; font-weight: bold; width: 13%; color: #0D47A1; border-left: 3px solid #800020; text-align: center; vertical-align: middle; }
+        .indicadores-cell { width: 20%; vertical-align: middle; }
+        .indicadores-cell textarea { width: 100%; height: 80px; border: none; resize: none; font-size: 10px; font-family: inherit; outline: none; background: transparent; color: #263238; }
+        
+        /* Contenedor de Logros Dinámicos */
+        .logros-container { width: 100%; }
+        .logro-row { display: flex; gap: 5px; margin-bottom: 5px; align-items: center; }
+        .logro-input { flex-grow: 1; border: 1px solid #ccc; padding: 4px; font-family: inherit; font-size: 10px; outline: none; }
+        .logro-input:focus { border-color: #0D47A1; }
+        .nota-logro-input { width: 55px; text-align: center; border: 1px solid #ccc; padding: 4px; font-weight: bold; outline: none; font-family: inherit; }
+        .nota-logro-input:focus { border-color: #0D47A1; background: #fffde7; }
+        
+        .btn-agregar { background: #1565C0; color: white; border: none; padding: 4px 8px; font-size: 9px; cursor: pointer; border-radius: 2px; margin-top: 5px; width: 100%; }
+        .btn-agregar:hover { background: #0D47A1; }
+        
+        .val-total-cell { width: 10%; text-align: center; background: #fafafa; vertical-align: middle; font-weight: bold; font-size: 16px; color: #263238; border: 2px solid #0D47A1;}
+        .desempeno-cell { width: 14%; text-align: center; font-weight: bold; font-size: 10px; background: #fff; vertical-align: middle; }
+        
+        /* Colores de desempeño */
+        .bajo { color: #800020; font-weight: bold; } .basico { color: #e67e22; font-weight: bold; } .alto { color: #0288D1; font-weight: bold; } .superior { color: #0D47A1; font-weight: bold; }
+
+        .bottom-section { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px; }
+        .box { border: 1px solid #0D47A1; padding: 10px; }
+        .box h3 { margin: -10px -10px 10px -10px; font-size: 11px; background: #0D47A1; color: #fff; padding: 4px 10px; }
+        .box textarea { width: 100%; height: 60px; border: 1px solid #ccc; resize: none; font-family: inherit; font-size: 11px; color: #263238; }
+        
+        /* Promedio General en Azul */
+        .promedio-general { background: linear-gradient(to right, #1565C0, #0D47A1); color: #fff; padding: 12px; text-align: center; font-size: 16px; font-weight: bold; margin-bottom: 15px; border: 2px solid #800020; }
+
+        .firmas { display: flex; justify-content: space-between; margin-top: 30px; padding-top: 20px; }
+        .firma { text-align: center; width: 40%; }
+        .firma-line { border-top: 2px solid #0D47A1; margin-top: 40px; font-weight: bold; font-size: 12px; color: #263238; }
+        .firma-role { font-size: 10px; color: #800020; font-weight: bold; }
+        
+        @media print {
+            body { background: none; padding: 0; margin: 0; }
+            .page { border: none; box-shadow: none; padding: 10mm; width: 100%; height: auto; }
+            input, textarea { border: none !important; }
+            .student-info { border: none; background: none; }
+            .btn-agregar { display: none; } /* Ocultar botones al imprimir */
+            .logro-input, .nota-logro-input { border: none !important; border-bottom: 1px solid #ccc !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <div class="header">
+        <div class="logo-space">
+            <img src="https://z-cdn-media.chatglm.cn/files/3c40ee37-a80a-4e23-8283-1a7346fb19ec.png?auth_key=1878827360-cfc3fd82f14b4c35b6775e29f69aa480-0-9b19bf418502f23613aa9fbdb3177f2c" alt="Escudo La Buena Semilla">
+        </div>
+        <div class="institution-info">
+            <h1>FUNDACIÓN EDUCATIVA LA BUENA SEMILLA</h1>
+            <p>RESOLUCIÓN No. 20121700096164 de 13-12-2012</p>
+            <p>Carrera 37 N° 27-38 V/de Torres | Tel: 3146234039</p>
+        </div>
+        <div class="logo-space">
+            <img src="https://z-cdn-media.chatglm.cn/files/3c40ee37-a80a-4e23-8283-1a7346fb19ec.png?auth_key=1878827360-cfc3fd82f14b4c35b6775e29f69aa480-0-9b19bf418502f23613aa9fbdb3177f2c" alt="Escudo La Buena Semilla">
+        </div>
+    </div>
+
+    <div class="title-box">BOLETÍN ACADÉMICO</div>
+
+    <div class="student-info">
+        <div class="info-group"><label>Año Lectivo:</label><input type="text" value="2024"></div>
+        <div class="info-group"><label>Periodo:</label><input type="text" value="I"></div>
+        <div class="info-group"><label>Grado:</label><input type="text" value="5°"></div>
+        <div class="info-group"><label>Puesto:</label><input type="text" value="1"></div>
+        <div class="info-group" style="grid-column: span 2;"><label>Estudiante:</label><input type="text" placeholder="Nombre completo del estudiante"></div>
+        <div class="info-group"><label>Calendario:</label><input type="text" value="A"></div>
+        <div class="info-group"><label>Jornada:</label><input type="text" value="Mañana"></div>
+        <div class="info-group" style="grid-column: span 2;"><label>Nivel de Escolaridad:</label><input type="text" value="Primaria"></div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ASIGNATURA</th>
+                <th>LOGROS / COMPETENCIAS (Añadir y Calificar)</th>
+                <th>INDICADORES DE DESEMPEÑO</th>
+                <th>VALORACIÓN<br>TOTAL</th>
+                <th>DESEMPEÑO</th>
+            </tr>
+        </thead>
+        <tbody id="tabla-body">
+            <!-- Filas generadas por JavaScript -->
+        </tbody>
+    </table>
+
+    <div class="promedio-general">
+        PROMEDIO GENERAL: <span id="promedio-final">0.0</span> — <span id="desempeno-final">N/A</span>
+    </div>
+
+    <div class="bottom-section">
+        <div class="box">
+            <h3>COMPORTAMIENTO Y DISCIPLINA</h3>
+            <textarea placeholder="Observaciones sobre el comportamiento y disciplina del estudiante durante el periodo..."></textarea>
+        </div>
+        <div class="box">
+            <h3>OBSERVACIONES ACADÉMICAS</h3>
+            <textarea placeholder="Observaciones generales del director de grupo sobre el desempeño académico..."></textarea>
+        </div>
+    </div>
+
+    <div class="firmas">
+        <div class="firma">
+            <div class="firma-line">Rector(a)</div>
+            <div class="firma-role">FUNDACIÓN EDUCATIVA LA BUENA SEMILLA</div>
+        </div>
+        <div class="firma">
+            <div class="firma-line">Director(a) de Grupo</div>
+            <div class="firma-role">FIRMA Y NÚMERO DE CÉDULA</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const asignaturas = [
+        "Ciencias Naturales", "Sociales e Historia", "Ética y Valores", "Religión",
+        "Lengua Extranjera Inglés", "Lengua Castellana", "Escritura y Literatura",
+        "Informática", "Educación Física y Deporte", "Matemáticas", "Geometría",
+        "Educación Artística y Manualidades"
+    ];
+
+    const tbody = document.getElementById('tabla-body');
+
+    function evaluarDesempeno(nota) {
+        if(nota < 3.0) return {text: 'Desempeño Bajo', class: 'bajo'};
+        if(nota < 4.0) return {text: 'Desempeño Básico', class: 'basico'};
+        if(nota < 4.6) return {text: 'Desempeño Alto', class: 'alto'};
+        return {text: 'Desempeño Superior', class: 'superior'};
+    }
+
+    // Agregar un nuevo logro a una asignatura específica
+    function agregarLogro(index) {
+        const container = document.getElementById(`logros-container-${index}`);
+        const newRow = document.createElement('div');
+        newRow.className = 'logro-row';
+        newRow.innerHTML = `
+            <input type="text" class="logro-input" placeholder="Escriba el logro o competencia...">
+            <input type="number" class="nota-logro-input" min="1.0" max="5.0" step="0.1" oninput="calcularValores(${index})">
+        `;
+        container.insertBefore(newRow, container.querySelector('.btn-agregar'));
+        newRow.querySelector('.logro-input').focus();
+    }
+
+    // Calcular valoración total de la asignatura y promedio general
+    function calcularValores(index) {
+        const container = document.getElementById(`logros-container-${index}`);
+        const notasInputs = container.querySelectorAll('.nota-logro-input');
+        let suma = 0;
+        let count = 0;
+
+        notasInputs.forEach(input => {
+            let val = parseFloat(input.value);
+            if(!isNaN(val) && val >= 1.0 && val <= 5.0) {
+                suma += val;
+                count++;
+            }
+        });
+
+        let promedioAsignatura = 0;
+        if(count > 0) {
+            promedioAsignatura = suma / count;
+        }
+
+        // Actualizar Valoración Total
+        const celdaTotal = document.getElementById(`val-total-${index}`);
+        const celdaDesemp = document.getElementById(`desemp-${index}`);
+        
+        if(count > 0) {
+            celdaTotal.innerText = promedioAsignatura.toFixed(1);
+            let desemp = evaluarDesempeno(promedioAsignatura);
+            celdaDesemp.innerText = desemp.text;
+            celdaDesemp.className = `desempeno-cell ${desemp.class}`;
+        } else {
+            celdaTotal.innerText = '';
+            celdaDesemp.innerText = '';
+            celdaDesemp.className = 'desempeno-cell';
+        }
+
+        calcularPromedioGeneral();
+    }
+
+    function calcularPromedioGeneral() {
+        let totalNotas = 0;
+        let countNotas = 0;
+        
+        asignaturas.forEach((asig, index) => {
+            let celdaTotal = document.getElementById(`val-total-${index}`);
+            let notaVal = parseFloat(celdaTotal.innerText);
+            
+            if(!isNaN(notaVal)) {
+                totalNotas += notaVal;
+                countNotas++;
+            }
+        });
+
+        let promFinal = document.getElementById('promedio-final');
+        let desempFinal = document.getElementById('desempeno-final');
+        if(countNotas > 0) {
+            let prom = totalNotas / countNotas;
+            promFinal.innerText = prom.toFixed(1);
+            let desemp = evaluarDesempeno(prom);
+            desempFinal.innerText = desemp.text;
+            desempFinal.className = desemp.class;
+        } else {
+            promFinal.innerText = '0.0';
+            desempFinal.innerText = 'N/A';
+        }
+    }
+
+    // Generar filas de la tabla
+    asignaturas.forEach((asig, index) => {
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="asignatura-name">${asig}</td>
+            <td class="logros-cell">
+                <div class="logros-container" id="logros-container-${index}">
+                    <div class="logro-row">
+                        <input type="text" class="logro-input" placeholder="Escriba el logro o competencia...">
+                        <input type="number" class="nota-logro-input" min="1.0" max="5.0" step="0.1" oninput="calcularValores(${index})">
+                    </div>
+                    <button class="btn-agregar" onclick="agregarLogro(${index})">+ Añadir Logro</button>
+                </div>
+            </td>
+            <td class="indicadores-cell"><textarea placeholder="Mínimo 3, máximo 7 indicadores. Ej: \n1. Identifica...\n2. Analiza...\n3. Propone..."></textarea></td>
+            <td class="val-total-cell" id="val-total-${index}"></td>
+            <td id="desemp-${index}" class="desempeno-cell"></td>
+        `;
+        tbody.appendChild(tr);
+    });
+</script>
+
+</body>
+</html>
